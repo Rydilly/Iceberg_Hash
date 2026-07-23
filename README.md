@@ -4,7 +4,7 @@ Project 3 of 3 in my quest to make a more robust hash algorithm.
 
 ## What it does
 
-Uses double hashing on a front and back yard to create a hash that's capable of holding around 95% capacity. Distribution should be very consistent because, instead of the random placement into buckets you get with cuckoo hashing, I give the hash the choice based on which bucket contains fewer elements, similar to robinhood hashing.
+Uses double hashing on a front and back yard to create a hash table that's capable of holding around 95% capacity. Distribution should be very consistent because, instead of the random placement into buckets you get with cuckoo hashing, I give the hash the choice based on which bucket contains fewer elements, similar to robinhood hashing.
 
 If both front yard buckets a key hashes to are full, the item is re-hashed with a different seed and placed in the backyard. The backyard is very small because the power of choice logic keeps it from filling up often.
 
@@ -40,7 +40,7 @@ Keys can be `str` or `int`.
 
 ## Reflection
 
-Out of the 3 small projects I did, I liked the cuckoo filter most. It may be less efficient than iceberg (even though they aren't really comparable), but I really liked the XOR logic with fingerprints that lets keys hold 2 values. The filter was so space efficient that time efficiency stopped being a tradeoff. The whole filter array was compact enough to fit in my L1 cache. A cache miss typically results in around 100 missed cpu cycles which allows a dumb algorithm that is able to use highly compressed data (cuckoo filter) to compete or even outperform algorithms with much fewer operations but poor cache locality.
+Out of the 3 small projects I did, I liked the cuckoo filter most. It may be less efficient than iceberg (even though they aren't really comparable), but I really liked the XOR logic with fingerprints that lets keys hold 2 values. The filter was so space efficient that time efficiency stopped being a tradeoff. The whole filter array was compact enough to fit in my L1 cache. A cache miss resulting in ram lookup typically results in 100+ missed cpu cycles which allows a dumb algorithm that is able to use highly compressed data (cuckoo filter) to compete or even outperform algorithms with much fewer operations but poor cache locality.
 
 To be honest, my goal starting these projects was to understand iceberg hashing, but I'm way more proud of my cuckoo filter and I learned way more building it. All the byte and bit comparisons made me miss C.
 
