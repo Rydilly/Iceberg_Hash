@@ -6,17 +6,17 @@ Project 3 of 3 in my quest to make a more robust hash algorithm.
 
 calculates 2 hashes and puts to the hashed bucket with a lower capacity  with a seperate buffer for overflow, creating a hash table that's capable of holding around 95% capacity. Distribution should be very consistent because, instead of the random selection with swaps you get with cuckoo hashing, the algorithm is able to utilize the [power of two choices](https://www.eecs.harvard.edu/~michaelm/postscripts/handbook2001.pdf) to choose the bucket contains fewer elements, similar to robinhood hashing which uses linear probing with the twist of evicting the value closer to its true hash location to create balance.
 
-If both front yard buckets are full, the item is re-hashed with a different seed and placed in the backyard. Unlike an actual literal iceberg in the ocean, the part that stays hidden or refered to as the "backyard" for iceberg hashing is very small because the power of two choice keeps the buckets in the frontyard balanced resulting in improbable overflow even at extremely high load factors for open addressing. 
+If both front yard buckets are full, the item is rehashed with a different seed and placed in the backyard. Unlike an actual literal iceberg in the ocean, the part that stays hidden or refered to as the "backyard" for iceberg hashing is very small because the power of two choice keeps the buckets in the frontyard balanced resulting in improbable overflow even at extremely high load factors for open addressing. 
 
-There's still a tiny chance of failure if both front-yard buckets *and* both backyard buckets a key routes to are all full. The odds are so small (again, power of two choices) that I'm not worried about it.
+There's still a tiny chance of failure if both frontyard buckets *and* both backyard buckets a key routes to are all full. The odds are so small (again, power of two choices) that I'm not worried about it.
 
-The table resizes based on **backyard usage**, because the backyard is the real indicator that hashing is starting to fail. Using a backyard makes it more space efficient but less time efficient — before an item lands in a backyard bucket, its key has to be compared against both of its front-yard hash locations.
+The table resizes based on **backyard usage**, because the backyard is the real indicator that hashing is starting to fail. Using a backyard makes it more space efficient but less time efficient — before an item lands in a backyard bucket, its key has to be compared against both of its frontyard hash locations.
 
 ## Files
 
-- `iceberg.py` — the working v1. Mod-based bucket indexing, list-of-lists storage.
+- `iceberg.py` — the working v1. Mod based bucket indexing, list of lists storage.
 - `faster_iceberg_v2.py` — same logic, but bucket counts are rounded to a power of 2 so I can use bitwise AND instead of mod, and resize copies through a numpy array.
-- `faster_iceberg.py` — **WIP**. My attempt at moving from array-of-structs to struct-of-arrays and using 1-byte fingerprints so a lookup can scan a whole cache line at once. `_find_key` isn't finished and there are still a few typos in it — leaving it here as a snapshot of where I stopped.
+- `faster_iceberg.py` — **WIP**. My attempt at moving from array of structs to struct of arrays and using 1 byte fingerprints so a lookup can scan a whole cache line at once. `_find_key` isn't finished and there are still a few typos in it — leaving it here as a snapshot of where I stopped.
 
 ## Requirements
 
@@ -44,14 +44,10 @@ Out of the 3 small projects I did, I liked the cuckoo filter most. It may be les
 
 To be honest, my goal starting these projects was to understand iceberg hashing, but I'm way more proud of my cuckoo filter and I learned way more building it. All the byte and bit comparisons made me miss C.
 
-I didn't bother learning how the time complexity is proven for iceberg — the proofs seemed pretty intimidating. I read a little over 10 pages of [Mitzenmacher's handbook chapter](https://www.eecs.harvard.edu/~michaelm/postscripts/handbook2001.pdf) on it. I understand the power of choice pretty well, but not the math behind it.
+I didn't bother learning how the time complexity is proven for iceberg, the proofs seemed pretty intimidating. I read a little over 10 pages of [Mitzenmacher's handbook chapter](https://www.eecs.harvard.edu/~michaelm/postscripts/handbook2001.pdf) on it. I understand the power of choice pretty well, but not the math behind it.
 
 -------------------------------------------------------------------------------
 Thought process
-Thought process
-Here's a proofread version with corrections marked:
-
-Corrected text:
 
 I might need to try using the power of choice with a separate chaining hash sometime. If the head node held length and end-of-chain metadata, I could see iceberg being an excellent approach to minimize clusters for improved lookup. The chains will be sorted by the bits of the hash value in reverse ordering to save computation on resize.
 
