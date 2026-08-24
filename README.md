@@ -1,4 +1,5 @@
 # Iceberg_Hash
+developed locally, uploaded on completion
 
 Project 3 of 3 in my quest to make a more robust hash algorithm.
 
