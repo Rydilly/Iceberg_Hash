@@ -7,11 +7,11 @@ import mmh3
 
 """
 TO-DO:
-numpy array for rehahing on resize
+numpy array for rehashing on resize
 numpy uint8 for fingerprint to search through buckets quicker
 on resize hash np.uint64 array
-bitwise operation rather then mod
-for shit hash>>old log &1
+bitwise operation rather than mod
+for shift hash>>old log &1
 """
 
 OptionT: TypeAlias= Some[T]| NoneOption
@@ -34,8 +34,8 @@ class IcebergHash:
         self.front_yard_buckets = 1<<front_yard_log
         
 
-        #hash table is converted from an Array of structures to a structures of arrays to asses fingerprints on singly cache line
-        f_slots = self.front_yard_buckets*self.bucket_size#note status is gone. finger print should be so fast to seach slots is no longer needed
+        #hash table is converted from an Array of structures to a structure of arrays to assess fingerprints on singly cache line
+        f_slots = self.front_yard_buckets*self.bucket_size#note status is gone. Fingerprint should be so fast to search slots is no longer needed
         self.f_f = np.zeros(f_slots, dtype=np.uint8)#front yard fingerprints
         self.f_hash = np.zeros(f_slots, dtype = np.uint64)
         self.f_keys = [None]*f_slots
@@ -68,9 +68,9 @@ class IcebergHash:
         I plan on refining the input to reduce hash iterations once I get a working version
         """
         optA, optB = mmh3.hash64(hash_input, seed = 42, signed = False)
-        cmp = self.front_yard_buckets-1#remember front yard buckets is a exponent of 2 so fy-1= 111....
-        finger_hash = mmh3(hash_input, seed= 69, signed = False)#front yard will always be called so we make the finger print here
-        return optA&cmp, optB&cmp, finger_hash&0xFF#last 2 are fingerprints F is 15 in hex (1111) so FF is byte of all 1's
+        cmp = self.front_yard_buckets-1#remember front yard buckets is an exponent of 2, so fy-1= 111....
+        finger_hash = mmh3(hash_input, seed= 69, signed = False)#front yard will always be called, so we make the fingerprint here
+        return optA&cmp, optB&cmp, finger_hash&0xFF#last 2 are fingerprints. F is 15 in hex (1111), so FF is a byte of all 1s
     
     def _hash_back_yard(self, hash_input):
         optA, optB = mmh3.hash64(hash_input, seed = 0, signed = False)
@@ -80,7 +80,7 @@ class IcebergHash:
     @staticmethod
     def _key_convert(key):
         match key:
-            case str():#could add first 2 last 2 char as key or refrence a array if 1 char
+            case str():#could add first 2 last 2 char as key or reference an array if 1 char
                 return key.encode()
             case int():
                 return key.to_bytes(8, "big")
