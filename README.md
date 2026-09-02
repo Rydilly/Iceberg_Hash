@@ -45,7 +45,7 @@ Out of the 3 small projects I did, I liked the cuckoo filter most. It may be les
 
 To be honest, my goal in starting these projects was to understand iceberg hashing, but I'm way more proud of my cuckoo filter, and I learned way more building it. All the byte and bit comparisons made me miss C.
 
-I didn't bother learning how the time complexity is proven for iceberg; the proofs seemed pretty intimidating. I read a little over 10 pages of [Mitzenmacher's handbook chapter](https://www.eecs.harvard.edu/~michaelm/postscripts/handbook2001.pdf) on it. I understand the power of choice pretty well, but not the math behind it.
+I worked through the proofs on how the time complexity is proven for iceberg; the proofs seemed pretty intimidating. I read a little over 10 pages of [Mitzenmacher's handbook chapter](https://www.eecs.harvard.edu/~michaelm/postscripts/handbook2001.pdf) on it. I understand the power of choice pretty well, but not the math behind it.
 
 -------------------------------------------------------------------------------
 Thought process
